@@ -1,1 +1,45 @@
-
+{
+    "manifestVersion": 1,
+    "id": "create-child-workitem-extension",
+    "publisher": "ASAVOTEO",
+    "version": "1.0.0",
+    "name": "Create Child Workitem",
+    "description": "Aggiunge un'opzione di menu per creare un work item figlio.",
+    "icons": {
+        "default": "images/icon.png"
+    },
+    "targets": [
+        {
+            "id": "Microsoft.VisualStudio.Services"
+        }
+    ],
+    "contributions": [
+        {
+            "id": "create-child-workitem-menu",
+            "type": "ms.vss-web.action",
+            "description": "Azione per creare un work item figlio",
+            "targets": [
+                "ms.vss-work-web.work-item-menu"
+            ],
+            "properties": {
+                "text": "Create Child Workitem",
+                "title": "Create Child Workitem",
+                "icon": "images/icon.png",
+                "uri": "create-child.html"
+            }
+        }
+    ],
+    "scopes": [
+        "vso.work_full"
+    ],
+    "files": [
+        {
+            "path": "create-child.html",
+            "addressable": true
+        },
+        {
+            "path": "images",
+            "addressable": true
+        }
+    ]
+}
