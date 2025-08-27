@@ -1,1 +1,30 @@
+name: Create Child Work Item
 
+# Questo workflow si attiva in risposta a un evento di repository_dispatch.
+# Usiamo questo trigger per l'integrazione con il webhook di Azure DevOps.
+on:
+  repository_dispatch:
+
+jobs:
+  create-child:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install axios
+
+      - name: Run script to create child work item
+        env:
+          # Le variabili d'ambiente vengono passate in modo sicuro dai Secrets.
+          PAT_TOKEN: ${{ secrets.AZURE_DEVOPS_PAT }}
+          # Il payload del webhook viene passato come input JSON.
+          WEBHOOK_PAYLOAD: ${{ toJSON(github.event.client_payload) }}
+        run: |
+          node ./create-child-script.js
