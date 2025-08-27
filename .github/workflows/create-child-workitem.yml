@@ -24,8 +24,7 @@ jobs:
         env:
           # Le variabili d'ambiente vengono passate in modo sicuro dai Secrets.
           PAT_TOKEN: ${{ secrets.AZURE_DEVOPS_PAT }}
-          # Il payload del webhook viene passato come input JSON.
+          # Il payload completo del webhook è accessibile direttamente dall'evento
           WEBHOOK_PAYLOAD: ${{ toJSON(github.event.client_payload) }}
         run: |
           node ./create-child-script.js
-
