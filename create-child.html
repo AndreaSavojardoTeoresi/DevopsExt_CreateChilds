@@ -3,11 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <title>Create child workitem</title>
+    
+    <script src="https://unpkg.com/azure-devops-extension-sdk@latest/dist/azure-devops-extension-sdk.js"></script>
+    <script>
+        async function createChildCustomWorkItem() {
+            try {
+                // Inizializza l'SDK di Azure DevOps
+                await SDK.init();
+                
+                // Ottiene il contesto dell'estensione, inclusi i dettagli del work item padre.
+                const context = SDK.get-context();
+                const parentWorkItemId = context.witId; 
+
+                // Ottiene il client per l'API Work Item Tracking.
+                const witClient = await SDK.get-client("VSS.Work.WebApi.WorkItemTrackingHttpClient");
+
+                // Prepara il JSON per la creazione del nuovo work item figlio.
+                const newWorkItemDocument = [
+                    {
+                        "op": "add",
+                        "path": "/fields/System.Title",
+                        "value": `Nuovo Work Item 'Prova' per: ${context.title}`
+                    },
+                    {
+                        "op": "add",
+                        "path": "/fields/System.WorkItemType",
+                        "value": "Prova" // Imposta il tipo di work item custom "Prova"
+                    },
+                    {
+                        "op": "add",
+                        "path": "/relations/-",
+                        "value": {
+                            "rel": "System.LinkTypes.Hierarchy-Reverse",
+                            "url": `${context.baseUri}_apis/wit/workitems/${parentWorkItemId}`
+                        }
+                    }
+                ];
+
+                // Chiama l'API REST per creare il nuovo work item.
+                const createdWorkItem = await witClient.create-work-item(null, newWorkItemDocument);
+
+                console.log("Work Item 'Prova' creato con successo:", createdWorkItem);
+
+                // Chiude la finestra/panel dell'estensione.
+                SDK.notify-close();
+
+            } catch (error) {
+                console.error("Errore durante la creazione del Work Item 'Prova':", error);
+            }
+        }
+
+        SDK.ready().then(() => {
+            createChildCustomWorkItem();
+        });
+    </script>
 </head>
 <body>
-    <script>
-        // Codice per creare il work item figlio.
-        // Caricherà l'SDK e interagirà con le API di Azure DevOps.
-    </script>
+    <p>Creazione di un nuovo work item custom "Prova" figlio...</p>
 </body>
 </html>
