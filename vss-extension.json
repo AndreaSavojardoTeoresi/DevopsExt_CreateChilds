@@ -8,10 +8,7 @@
     "icons": {
         "default": "images/icon.png"
     },
-    "categories": [
-        "Azure Boards",
-        "Planning"
-    ],
+    "categories": [ "Azure Boards" ],
     "targets": [
         {
             "id": "Microsoft.VisualStudio.Services"
