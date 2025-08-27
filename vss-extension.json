@@ -8,6 +8,10 @@
     "icons": {
         "default": "images/icon.png"
     },
+    "categories": [
+        "Azure Boards",
+        "Work Management"
+    ],
     "targets": [
         {
             "id": "Microsoft.VisualStudio.Services"
